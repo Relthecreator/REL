@@ -7,9 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a0a; /* Darker charcoal */
+            --bg: #0a0a0a; /* Dark charcoal */
             --text: #f0f0f0;
-            --impact-glow: rgba(217, 74, 56, 1); /* Terra Cotta glow */
+            --impact-glow: rgba(217, 74, 56, 1); /* Terra Cotta impact glow */
             --project-icon-glow: rgba(255, 255, 255, 0.4);
         }
 
@@ -23,10 +23,10 @@
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Inter', sans-serif;
-            overflow: hidden; /* Lock scrolling during intro */
+            overflow: hidden; /* Lock scrolling during the intro sequence */
         }
 
-        /* --- STAGE 1: OPENING REVEAL (3s) --- */
+        /* --- STAGE 1: OPENING REVEAL (0s - 3s) --- */
         #stage-1-reveal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -53,11 +53,11 @@
             100% { transform: translateY(0); opacity: 1; }
         }
 
-        /* --- STAGE 2: THE VICIOUS SLAM (1.5s) --- */
+        /* --- STAGE 2: THE VICIOUS SLAM (3s - 4.5s) --- */
         #stage-2-slam {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; /* Contrast black */
+            background: #000; /* Contrast black for slam impact */
             z-index: 900;
             opacity: 0; /* Starts hidden */
             display: flex;
@@ -66,21 +66,33 @@
             animation: stageIn 0.1s ease 3s forwards, stageOut 1s ease 4.5s forwards;
         }
 
-        /* The dynamic Hand Grip Assembly (descends at 3s) */
+        /* --- THE DYNAMIC HAND GRIP ASSEMBLY (THE "NICE" PART) --- */
         #hand-grip {
             position: absolute;
-            top: -200px; /* Starts above frame */
-            width: 150px;
-            height: 200px;
-            /* Stylized robotic/metallic hand graphic */
-            background: linear-gradient(135deg, #1a1a1a 0%, #333 50%, #1a1a1a 100%);
-            clip-path: polygon(10% 0, 90% 0, 90% 10%, 100% 20%, 90% 80%, 90% 90%, 10% 90%, 0 80%, 10% 20%);
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            top: -300px; /* Starts way above frame */
+            width: 200px; /* Adjusted size for a realistic image */
+            height: 300px; /* Adjusted size for a realistic image */
+            
+            /* --- INSTRUCTIONS FOR USER: REPLACE THE IMAGE URL BELOW --- */
+            /* I have used a placeholder link to a high-quality articulated hand from Unsplash. 
+               You need to replace this URL with the final image you want (e.g., your own image 
+               stored on GitHub, or a specific stock image link). A gripping human or mechanical 
+               hand works best. */
+            background-image: url('https://images.unsplash.com/photo-1518314916381-77a37c2a49ae?q=80&w=2670&auto=format&fit=crop'); 
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            
+            /* Grayscale for premium, cohesive feel with the dark site */
+            filter: grayscale(100%); 
+            
             display: flex;
             justify-content: center;
             align-items: center;
+            
+            /* Slam down, recede, and subtle hover animations for juice */
             animation: slamDown 1s cubic-bezier(0.77, 0, 0.175, 1) 3s forwards, recede 1s ease 4.3s forwards;
+            position: relative;
         }
 
         /* Small project icons 'held' inside the hand structure */
@@ -92,7 +104,11 @@
             margin: 5px;
             opacity: 0.8;
             box-shadow: 0 0 10px var(--project-icon-glow);
+            position: absolute;
+            bottom: 30px; /* Positioned relative to the hand image */
         }
+        
+        .held-project-icon:nth-child(2) { opacity: 1; bottom: 40px; }
 
         /* The Impact Visual (triggers when hand reaches 70%) */
         #slam-impact {
@@ -104,25 +120,12 @@
             height: 100px;
             background: radial-gradient(circle, var(--impact-glow) 0%, transparent 70%);
             border-radius: 50%;
-            animation: impactReveal 1s ease 3.3s forwards, impactDebris 0.5s ease 3.3s forwards;
-            opacity: 0;
-        }
-
-        /* UTILITY DEBRIS SHAPE */
-        #debris {
-            position: absolute;
-            bottom: 30%; left: 50%;
-            transform: translateX(-50%) scale(0);
-            width: 150px;
-            height: 150px;
-            border: 2px dashed rgba(217, 74, 56, 0.3);
-            border-radius: 50%;
-            animation: impactDebris 0.8s ease 3.3s forwards;
+            animation: impactReveal 1s ease 3.3s forwards;
             opacity: 0;
         }
 
         @keyframes slamDown {
-            0% { top: -200px; opacity: 1; }
+            0% { top: -300px; opacity: 1; }
             100% { top: 70%; opacity: 1; }
         }
 
@@ -135,12 +138,6 @@
             0% { transform: translateX(-50%) scale(0); opacity: 0; }
             50% { transform: translateX(-50%) scale(5); opacity: 1; }
             100% { transform: translateX(-50%) scale(6); opacity: 0; }
-        }
-
-        @keyframes impactDebris {
-            0% { transform: translateX(-50%) scale(0); opacity: 0; }
-            50% { transform: translateX(-50%) scale(3); opacity: 1; }
-            100% { transform: translateX(-50%) scale(4); opacity: 0; }
         }
 
         /* --- STAGE 3: ALIGNMENT (Starts at 4.5s) --- */
@@ -168,7 +165,7 @@
             animation: expandWidth 1.5s cubic-bezier(0.77, 0, 0.175, 1) 5.5s forwards;
         }
 
-        /* --- THE ALIGNED PROJECT TILES --- */
+        /* --- THE ALIGNED PROJECT TILES (GAMES) --- */
         .project-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -189,7 +186,7 @@
             animation: revealUp 1s ease 6s forwards;
         }
 
-        /* Tile hover effects: Lift and subtle text color */
+        /* Tile hover effects: Lift and subtle color transition */
         .project-tile:hover {
             transform: translateY(-8px);
             border-color: var(--impact-glow);
@@ -211,7 +208,7 @@
             letter-spacing: 1px;
         }
 
-        /* Subtle indicator that games go here */
+        /* Subtly indicating these are Games */
         .project-tile::after {
             content: 'G A M E S';
             position: absolute;
@@ -262,7 +259,6 @@
             <div class="held-project-icon"></div>
         </div>
         <div id="slam-impact"></div>
-        <div id="debris"></div>
     </div>
 
     <main id="stage-3-aligned">
