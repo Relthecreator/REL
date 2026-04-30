@@ -1,10 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>REL - My New Site</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REL | Portfolio</title>
+    <style>
+        /* This section is the CSS - it handles all the design and colors */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Georgia', serif; /* A classic, elegant font */
+            background-color: #f4f1ea; /* A warm, natural off-white */
+            color: #2b2b2b; /* Soft, dark slate (easier on the eyes than pure black) */
+            line-height: 1.6;
+        }
+
+        /* The Top Header Section */
+        header {
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 2px solid #dcd7cb;
+            background-color: #ffffff;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            letter-spacing: 3px;
+        }
+
+        p.subtitle {
+            font-family: system-ui, sans-serif; /* Clean, modern contrast font */
+            color: #666;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        /* The Main Content Area */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        /* Where your projects will go */
+        .projects-grid {
+            margin-top: 40px;
+        }
+
+        .project-card {
+            background-color: #ffffff;
+            border: 1px solid #e0ddd5;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); /* Very soft, natural shadow */
+            margin-bottom: 30px;
+        }
+
+        .project-card h2 {
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+
+        /* A classic looking button */
+        .btn {
+            display: inline-block;
+            background-color: #2b2b2b;
+            color: #ffffff;
+            padding: 12px 24px;
+            text-decoration: none;
+            font-family: system-ui, sans-serif;
+            border-radius: 4px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #555555;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to REL!</h1>
-    <p>This is my brand new project site.</p>
+
+    <header>
+        <h1>REL</h1>
+        <p class="subtitle">Creator & Developer</p>
+    </header>
+
+    <div class="container">
+        <h2>Welcome to my space.</h2>
+        <p>This is the foundation. Clean, classic, and ready to showcase some great work.</p>
+
+        <div class="projects-grid">
+            
+            <div class="project-card">
+                <h2>Project One: Coming Soon</h2>
+                <p>We will add the details, images, and links for your first project right here.</p>
+                <a href="#" class="btn">View Project</a>
+            </div>
+
+        </div>
+    </div>
+
 </body>
 </html>
