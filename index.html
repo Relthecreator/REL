@@ -4,286 +4,280 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>REL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a0a; /* Dark charcoal */
-            --text: #f0f0f0;
-            --impact-glow: rgba(217, 74, 56, 1); /* Terra Cotta impact glow */
-            --project-icon-glow: rgba(255, 255, 255, 0.4);
+            --bg: #000000; /* Pitch black for seamless blending */
+            --text: #ffffff;
+            --accent: #ff4500; /* Fire/Explosion Orange */
         }
 
-        * {
-            box-sizing: border-box;
+        body, html {
             margin: 0;
             padding: 0;
-        }
-
-        body {
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Inter', sans-serif;
-            overflow: hidden; /* Lock scrolling during the intro sequence */
+            overflow-x: hidden;
+            height: 100vh;
         }
 
-        /* --- STAGE 1: OPENING REVEAL (0s - 3s) --- */
-        #stage-1-reveal {
+        /* --- 1. THE SCREEN SHAKE EFFECTS --- */
+        #sequence-wrapper {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg);
+            pointer-events: none;
             z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: stageOut 1s ease 3s forwards;
+            /* Triggers exactly when the hand hits the bottom (4.0s) */
+            animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) 4.0s forwards;
         }
 
-        #stage-1-reveal h1 {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(5rem, 15vw, 15rem);
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: var(--text);
-            animation: revealUp 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
-            mix-blend-mode: difference; /* Brace yourself */
+        @keyframes shake {
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            10%, 30%, 50%, 70%, 90% { transform: translate3d(-20px, 15px, 0); }
+            20%, 40%, 60%, 80% { transform: translate3d(20px, -15px, 0); }
         }
 
-        @keyframes revealUp {
-            0% { transform: translateY(100%); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-
-        /* --- STAGE 2: THE VICIOUS SLAM (3s - 4.5s) --- */
-        #stage-2-slam {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; /* Contrast black for slam impact */
-            z-index: 900;
-            opacity: 0; /* Starts hidden */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: stageIn 0.1s ease 3s forwards, stageOut 1s ease 4.5s forwards;
-        }
-
-        /* --- THE DYNAMIC HAND GRIP ASSEMBLY (THE "NICE" PART) --- */
-        #hand-grip {
+        /* --- 2. THE DESCENDING HAND --- */
+        #the-hand-container {
             position: absolute;
-            top: -300px; /* Starts way above frame */
-            width: 200px; /* Adjusted size for a realistic image */
-            height: 300px; /* Adjusted size for a realistic image */
-            
-            /* --- INSTRUCTIONS FOR USER: REPLACE THE IMAGE URL BELOW --- */
-            /* I have used a placeholder link to a high-quality articulated hand from Unsplash. 
-               You need to replace this URL with the final image you want (e.g., your own image 
-               stored on GitHub, or a specific stock image link). A gripping human or mechanical 
-               hand works best. */
-            background-image: url('https://images.unsplash.com/photo-1518314916381-77a37c2a49ae?q=80&w=2670&auto=format&fit=crop'); 
+            top: 0; 
+            left: 50%;
+            margin-left: -200px; /* Centers the 400px wide container */
+            width: 400px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* The choreography: Entry, Slow Creep, Windup, Slam! */
+            animation: 
+                handMovement 4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards,
+                hideHand 0.1s linear 4.0s forwards;
+        }
+
+        #the-hand-image {
+            width: 100%;
+            height: 450px;
+            /* LIVE REALISTIC HAND IMAGE */
+            background-image: url('http://googleusercontent.com/image_collection/image_retrieval/6916022743801547202_0');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: bottom center;
+            /* This strips the black background away perfectly */
+            mix-blend-mode: screen; 
+            filter: grayscale(40%) contrast(1.2); /* Makes it look gritty and cinematic */
+            position: relative;
+            z-index: 10;
+        }
+
+        /* The glowing core (your projects) held in the grip */
+        #held-cargo {
+            position: absolute;
+            bottom: 150px; 
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 69, 0, 0.9);
+            box-shadow: 0 0 50px 20px rgba(255, 69, 0, 0.8), 0 0 100px 40px rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            z-index: 5;
+            animation: pulseGlow 0.5s infinite alternate;
+        }
+
+        /* The Exact Timing of the Slam */
+        @keyframes handMovement {
+            0% { transform: translateY(-100vh); }
+            10% { transform: translateY(-20vh); } /* Fast entry */
+            85% { transform: translateY(5vh); }  /* Very slow, menacing creep downwards */
+            92% { transform: translateY(-5vh); } /* Winds up/pulls back slightly */
+            100% { transform: translateY(70vh); } /* MASSIVE SLAM INTO THE GROUND */
+        }
+
+        @keyframes hideHand {
+            to { opacity: 0; visibility: hidden; display: none; }
+        }
+
+        @keyframes pulseGlow {
+            to { box-shadow: 0 0 80px 40px rgba(255, 69, 0, 1), 0 0 120px 50px rgba(255, 255, 255, 0.6); }
+        }
+
+        /* --- 3. THE EXPLOSION --- */
+        #explosion-gfx {
+            position: absolute;
+            top: 50%; left: 50%;
+            margin-top: -400px; margin-left: -400px;
+            width: 800px; height: 800px;
+            /* LIVE EXPLOSION IMAGE */
+            background-image: url('http://googleusercontent.com/image_collection/image_retrieval/9872055587267074690_0');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            
-            /* Grayscale for premium, cohesive feel with the dark site */
-            filter: grayscale(100%); 
-            
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            
-            /* Slam down, recede, and subtle hover animations for juice */
-            animation: slamDown 1s cubic-bezier(0.77, 0, 0.175, 1) 3s forwards, recede 1s ease 4.3s forwards;
-            position: relative;
-        }
-
-        /* Small project icons 'held' inside the hand structure */
-        .held-project-icon {
-            width: 30px;
-            height: 30px;
-            background-color: var(--text);
-            border-radius: 4px;
-            margin: 5px;
-            opacity: 0.8;
-            box-shadow: 0 0 10px var(--project-icon-glow);
-            position: absolute;
-            bottom: 30px; /* Positioned relative to the hand image */
-        }
-        
-        .held-project-icon:nth-child(2) { opacity: 1; bottom: 40px; }
-
-        /* The Impact Visual (triggers when hand reaches 70%) */
-        #slam-impact {
-            position: absolute;
-            bottom: 30%; /* Match slamDown 70% point */
-            left: 50%;
-            transform: translateX(-50%) scale(0);
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, var(--impact-glow) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: impactReveal 1s ease 3.3s forwards;
+            mix-blend-mode: screen;
             opacity: 0;
+            transform: scale(0.1);
+            /* Triggers exactly on impact */
+            animation: boom 1.5s ease-out 4.0s forwards;
+            z-index: 100;
         }
 
-        @keyframes slamDown {
-            0% { top: -300px; opacity: 1; }
-            100% { top: 70%; opacity: 1; }
+        #flash {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: white;
+            z-index: 1001;
+            opacity: 0;
+            pointer-events: none;
+            animation: whiteFlash 0.8s ease-out 4.0s forwards;
         }
 
-        @keyframes recede {
-            0% { top: 70%; opacity: 1; }
-            100% { top: 50%; opacity: 0; }
+        @keyframes boom {
+            0% { opacity: 0; transform: scale(0.1); }
+            10% { opacity: 1; transform: scale(1.5); }
+            100% { opacity: 0; transform: scale(3); filter: blur(15px) brightness(0); }
         }
 
-        @keyframes impactReveal {
-            0% { transform: translateX(-50%) scale(0); opacity: 0; }
-            50% { transform: translateX(-50%) scale(5); opacity: 1; }
-            100% { transform: translateX(-50%) scale(6); opacity: 0; }
+        @keyframes whiteFlash {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            100% { opacity: 0; }
         }
 
-        /* --- STAGE 3: ALIGNMENT (Starts at 4.5s) --- */
-        #stage-3-aligned {
-            position: relative;
-            padding: 10rem 4rem;
-            z-index: 800;
-            opacity: 0; /* Starts hidden */
-            animation: stageIn 1.5s ease 4.5s forwards;
+        /* --- 4. THE AFTERMATH (YOUR GAMES REVEAL) --- */
+        #main-content {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            padding: 8rem 4rem;
+            box-sizing: border-box;
+            opacity: 0;
+            z-index: 50;
+            /* Fades in through the smoke after the explosion */
+            animation: revealContent 2s ease 4.8s forwards;
+            overflow-y: auto; 
         }
 
-        .main-title {
+        @keyframes revealContent {
+            0% { opacity: 0; transform: translateY(100px); }
+            100% { opacity: 1; transform: translateY(0); pointer-events: all; }
+        }
+
+        .title-wrapper {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        h1 {
             font-family: 'Syne', sans-serif;
-            font-size: 4rem;
-            margin-bottom: 2rem;
+            font-size: 6rem;
+            margin: 0;
             text-transform: uppercase;
+            letter-spacing: 10px;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
         }
 
-        /* Brutalist line divider */
-        .line {
-            height: 2px;
-            background: var(--text);
-            margin: 2rem 0 5rem 0;
-            width: 0;
-            animation: expandWidth 1.5s cubic-bezier(0.77, 0, 0.175, 1) 5.5s forwards;
-        }
-
-        /* --- THE ALIGNED PROJECT TILES (GAMES) --- */
-        .project-row {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .project-tile {
-            background-color: rgba(26, 26, 26, 0.8);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 4px;
-            cursor: pointer;
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        /* The Game Cards */
+        .card {
+            background: rgba(15, 15, 15, 0.9);
+            border: 1px solid rgba(255, 69, 0, 0.4);
+            border-radius: 8px;
+            padding: 50px 30px;
+            text-align: center;
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
-            animation: revealUp 1s ease 6s forwards;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+            cursor: pointer;
         }
 
-        /* Tile hover effects: Lift and subtle color transition */
-        .project-tile:hover {
-            transform: translateY(-8px);
-            border-color: var(--impact-glow);
-            box-shadow: 0 10px 30px rgba(217, 74, 56, 0.2);
-        }
-
-        .project-tile h3 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-        }
-
-        .project-tile p {
-            color: #999;
-            font-weight: 300;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-        }
-
-        /* Subtly indicating these are Games */
-        .project-tile::after {
-            content: 'G A M E S';
+        /* Glowing hover effect */
+        .card::before {
+            content: '';
             position: absolute;
-            bottom: -20px;
-            right: 10px;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(255,69,0,0.15) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 69, 0, 1);
+            box-shadow: 0 15px 50px rgba(255, 69, 0, 0.3);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card h2 {
             font-family: 'Syne', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 800;
-            color: rgba(255, 255, 255, 0.03);
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card p {
+            color: #888;
+            font-size: 0.9rem;
             text-transform: uppercase;
-            transition: color 0.3s ease;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 2;
         }
 
-        .project-tile:hover::after {
-            color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Sequential tile delay */
-        .project-tile:nth-child(2) { animation-delay: 6.2s; }
-        .project-tile:nth-child(3) { animation-delay: 6.4s; }
-        .project-tile:nth-child(4) { animation-delay: 6.6s; }
-
-        /* --- UTILITY ANIMATIONS --- */
-        @keyframes stageIn { 100% { opacity: 1; } }
-        @keyframes stageOut { 100% { transform: translateY(-100%); opacity: 0; visibility: hidden; } }
-        @keyframes expandWidth { 100% { width: 100%; } }
-
-        /* Mobile Adjustments */
+        /* Mobile adjustments */
         @media (max-width: 768px) {
-            #stage-3-aligned { padding: 5rem 2rem; }
-            .project-row { grid-template-columns: 1fr; gap: 1.5rem; }
-            .project-tile h3 { font-size: 1.5rem; }
+            #main-content { padding: 5rem 2rem; }
+            h1 { font-size: 4rem; }
+            #the-hand-container { transform: scale(0.7); }
         }
     </style>
 </head>
 <body>
 
-    <div id="stage-1-reveal">
-        <div style="overflow: hidden;">
-            <h1>REL.</h1>
+    <div id="sequence-wrapper">
+        <div id="the-hand-container">
+            <div id="the-hand-image"></div>
+            <div id="held-cargo"></div>
         </div>
-    </div>
-
-    <div id="stage-2-slam">
-        <div id="hand-grip">
-            <div class="held-project-icon"></div>
-            <div class="held-project-icon" style="opacity: 1;"></div>
-            <div class="held-project-icon"></div>
-        </div>
-        <div id="slam-impact"></div>
-    </div>
-
-    <main id="stage-3-aligned">
-        <h2 class="main-title">P R O J E C T S: A L I G N E D</h2>
-        <div class="line"></div>
         
-        <div class="project-row">
-            <div class="project-tile">
-                <h3>Aetheria</h3>
-                <p>Systems RPG</p>
+        <div id="explosion-gfx"></div>
+    </div>
+    
+    <div id="flash"></div>
+
+    <div id="main-content">
+        <div class="title-wrapper">
+            <h1>R E L</h1>
+        </div>
+        
+        <div class="grid">
+            <div class="card">
+                <h2>GAME 01</h2>
+                <p>Awaiting Link</p>
             </div>
-            <div class="project-tile">
-                <h3>Void Runner</h3>
-                <p>Action Platformer</p>
+            <div class="card">
+                <h2>GAME 02</h2>
+                <p>Awaiting Link</p>
             </div>
-            <div class="project-tile">
-                <h3>Cipher</h3>
-                <p>Data Puzzle</p>
+            <div class="card">
+                <h2>GAME 03</h2>
+                <p>Awaiting Link</p>
             </div>
-            <div class="project-tile">
-                <h3>Echo</h3>
-                <p>Narrative Sim</p>
+            <div class="card">
+                <h2>GAME 04</h2>
+                <p>Awaiting Link</p>
             </div>
         </div>
-    </main>
+    </div>
 
 </body>
 </html>
