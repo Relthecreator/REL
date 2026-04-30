@@ -7,9 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #000000; /* Pitch black for seamless blending */
+            --bg: #000000;
             --text: #ffffff;
-            --accent: #ff4500; /* Fire/Explosion Orange */
+            --accent: #ff4500;
         }
 
         body, html {
@@ -28,7 +28,6 @@
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: 1000;
-            /* Triggers exactly when the hand hits the bottom (4.0s) */
             animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) 4.0s forwards;
         }
 
@@ -38,42 +37,39 @@
             20%, 40%, 60%, 80% { transform: translate3d(20px, -15px, 0); }
         }
 
-        /* --- 2. THE DESCENDING HAND --- */
+        /* --- 2. THE DESCENDING FIST --- */
         #the-hand-container {
             position: absolute;
             top: 0; 
             left: 50%;
-            margin-left: -200px; /* Centers the 400px wide container */
-            width: 400px;
-            height: 600px;
+            margin-left: -150px; /* Centers the 300px wide container */
+            width: 300px;
+            height: 400px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* The choreography: Entry, Slow Creep, Windup, Slam! */
             animation: 
                 handMovement 4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards,
                 hideHand 0.1s linear 4.0s forwards;
         }
 
-        #the-hand-image {
-            width: 100%;
-            height: 450px;
-            /* LIVE REALISTIC HAND IMAGE */
-            background-image: url('http://googleusercontent.com/image_collection/image_retrieval/6916022743801547202_0');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: bottom center;
-            /* This strips the black background away perfectly */
-            mix-blend-mode: screen; 
-            filter: grayscale(40%) contrast(1.2); /* Makes it look gritty and cinematic */
+        /* The Emoji Fist */
+        #the-fist {
+            font-size: 250px;
+            line-height: 1;
+            margin: 0;
+            /* Rotate to point downwards */
+            transform: rotate(180deg);
             position: relative;
             z-index: 10;
+            /* Adding a sick orange drop shadow to blend with the core */
+            filter: drop-shadow(0 -20px 30px rgba(255, 69, 0, 0.6));
         }
 
-        /* The glowing core (your projects) held in the grip */
+        /* The glowing core (your projects) held by the emoji */
         #held-cargo {
             position: absolute;
-            bottom: 150px; 
+            bottom: 80px; /* Sits right at the knuckles */
             width: 60px;
             height: 60px;
             background: rgba(255, 69, 0, 0.9);
@@ -83,13 +79,12 @@
             animation: pulseGlow 0.5s infinite alternate;
         }
 
-        /* The Exact Timing of the Slam */
         @keyframes handMovement {
             0% { transform: translateY(-100vh); }
-            10% { transform: translateY(-20vh); } /* Fast entry */
-            85% { transform: translateY(5vh); }  /* Very slow, menacing creep downwards */
-            92% { transform: translateY(-5vh); } /* Winds up/pulls back slightly */
-            100% { transform: translateY(70vh); } /* MASSIVE SLAM INTO THE GROUND */
+            10% { transform: translateY(-10vh); } 
+            85% { transform: translateY(15vh); }  
+            92% { transform: translateY(5vh); } 
+            100% { transform: translateY(80vh); } 
         }
 
         @keyframes hideHand {
@@ -106,7 +101,7 @@
             top: 50%; left: 50%;
             margin-top: -400px; margin-left: -400px;
             width: 800px; height: 800px;
-            /* LIVE EXPLOSION IMAGE */
+            /* Kept the cinematic explosion image */
             background-image: url('http://googleusercontent.com/image_collection/image_retrieval/9872055587267074690_0');
             background-size: contain;
             background-repeat: no-repeat;
@@ -114,7 +109,6 @@
             mix-blend-mode: screen;
             opacity: 0;
             transform: scale(0.1);
-            /* Triggers exactly on impact */
             animation: boom 1.5s ease-out 4.0s forwards;
             z-index: 100;
         }
@@ -149,7 +143,6 @@
             box-sizing: border-box;
             opacity: 0;
             z-index: 50;
-            /* Fades in through the smoke after the explosion */
             animation: revealContent 2s ease 4.8s forwards;
             overflow-y: auto; 
         }
@@ -182,7 +175,6 @@
             margin: 0 auto;
         }
 
-        /* The Game Cards */
         .card {
             background: rgba(15, 15, 15, 0.9);
             border: 1px solid rgba(255, 69, 0, 0.4);
@@ -196,7 +188,6 @@
             cursor: pointer;
         }
 
-        /* Glowing hover effect */
         .card::before {
             content: '';
             position: absolute;
@@ -233,11 +224,11 @@
             z-index: 2;
         }
 
-        /* Mobile adjustments */
         @media (max-width: 768px) {
             #main-content { padding: 5rem 2rem; }
             h1 { font-size: 4rem; }
-            #the-hand-container { transform: scale(0.7); }
+            #the-fist { font-size: 150px; }
+            #held-cargo { bottom: 50px; width: 40px; height: 40px; }
         }
     </style>
 </head>
@@ -245,7 +236,7 @@
 
     <div id="sequence-wrapper">
         <div id="the-hand-container">
-            <div id="the-hand-image"></div>
+            <div id="the-fist">✊</div>
             <div id="held-cargo"></div>
         </div>
         
